@@ -4,21 +4,30 @@ import PartnersSlider from "./components/sliders/partnersSlider";
 import VacanciesList from "./components/vacancies list/vacanciesList";
 
 export default async function Home() {
-  const companiesRes = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/companies`,
-    {
-      cache: "no-store",
-    },
-  );
-  const companies = await companiesRes.json();
+  let companies = [];
+  let vacancies = [];
 
-  const vacanciesRes = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/vacancies`,
-    {
-      cache: "no-store",
-    },
-  );
-  const vacancies = await vacanciesRes.json();
+  try {
+    const companiesRes = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/companies`,
+      { cache: "no-store" },
+    );
+    if (!companiesRes.ok) throw new Error("Failed to fetch companies");
+    companies = await companiesRes.json();
+  } catch (err) {
+    console.error("Companies fetch error:", err);
+  }
+
+  try {
+    const vacanciesRes = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/vacancies`,
+      { cache: "no-store" },
+    );
+    if (!vacanciesRes.ok) throw new Error("Failed to fetch vacancies");
+    vacancies = await vacanciesRes.json();
+  } catch (err) {
+    console.error("Vacancies fetch error:", err);
+  }
 
   return (
     <div className="flex flex-col gap-47.5 max-md:gap-0 overflow-hidden">
