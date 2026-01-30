@@ -8,6 +8,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { useSearchParams } from "next/navigation";
 import VacancyCard from "../components/cards/vacancyCard";
+import { useQuery } from "@tanstack/react-query";
 
 type FilterValues = {
   search_text: string;
@@ -110,49 +111,6 @@ export default function VacanciesClient() {
     },
   ];
 
-  const vacancies = [
-    {
-      id: 1,
-      companyName: "რედბერი",
-      position: "Front-end დეველოპერი",
-      loaction: "თბილისი",
-      salary: "5000",
-      workType: "დისტანციური",
-    },
-    {
-      id: 2,
-      companyName: "TNET", 
-      position: "Senior Front-end დეველოპერი",
-      loaction: "თბილისი",
-      salary: "8000",
-      workType: "ჰიბრიდული",
-    },
-    {
-      id: 3,
-      companyName: "Silk net",
-      position: "IT",
-      loaction: "თელავი",
-      salary: "2000",
-      workType: "ოფისში",
-    },
-    {
-      id: 4,
-      companyName: "ავერსი",
-      position: "მოლარე ოპერატორი",
-      loaction: "ყვარელი",
-      salary: "1500",
-      workType: "ოფისში",
-    },
-    {
-      id: 5,
-      companyName: "თეგეტა",
-      position: "ძრავის მექანიკოსი",
-      loaction: "თბილისი",
-      salary: "4000",
-      workType: "ოფისში",
-    },
-  ];
-
   const searchParams = useSearchParams();
 
   const search_text = searchParams.get("search_text") || "";
@@ -194,6 +152,26 @@ export default function VacanciesClient() {
   const searchLink = params.toString()
     ? `/vacancies?${params.toString()}`
     : "/vacancies";
+
+  const { data: vacancies = [], isLoading } = useQuery({
+    queryKey: [
+      "vacancies",
+      {
+        search_text,
+        defaultCities,
+        defaultCategories,
+        defaultWorkTypes,
+        defaultSalaryTypes,
+      },
+    ],
+    queryFn: async () => {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/vacancies?${params.toString()}`,
+      );
+      if (!res.ok) throw new Error("Failed to fetch vacancies");
+      return res.json();
+    },
+  });
 
   return (
     <div>
@@ -275,7 +253,7 @@ export default function VacanciesClient() {
             {vacancies?.length} განცხადება
           </p>
           <div className="flex flex-col gap-5 items-center w-full">
-            {false ? (
+            {isLoading ? (
               [1, 2, 3].map((item: any) => (
                 <div
                   key={item}

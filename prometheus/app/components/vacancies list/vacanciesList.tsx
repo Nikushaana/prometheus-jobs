@@ -1,49 +1,9 @@
 import Link from "next/link";
 import VacancyCard from "../cards/vacancyCard";
+import { Vacancy } from "@/types";
 
-export default function VacanciesList() {
-  const vacancies = [
-    {
-      id: 1,
-      companyName: "რედბერი",
-      position: "Front-end დეველოპერი",
-      loaction: "თბილისი",
-      salary: "5000",
-      workType: "დისტანციური",
-    },
-    {
-      id: 2,
-      companyName: "TNET",
-      position: "Senior Front-end დეველოპერი",
-      loaction: "თბილისი",
-      salary: "8000",
-      workType: "ჰიბრიდული",
-    },
-    {
-      id: 3,
-      companyName: "Silk net",
-      position: "IT",
-      loaction: "თელავი",
-      salary: "2000",
-      workType: "ოფისში",
-    },
-    {
-      id: 4,
-      companyName: "ავერსი",
-      position: "მოლარე ოპერატორი",
-      loaction: "ყვარელი",
-      salary: "1500",
-      workType: "ოფისში",
-    },
-    {
-      id: 5,
-      companyName: "თეგეტა",
-      position: "ძრავის მექანიკოსი",
-      loaction: "თბილისი",
-      salary: "4000",
-      workType: "ოფისში",
-    }, 
-  ];
+export default function VacanciesList({ vacancies }: { vacancies: Vacancy[] }) {
+
   return (
     <div className="flex flex-col gap-y-7.5">
       <div className="flex items-center justify-center">

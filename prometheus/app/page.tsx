@@ -3,19 +3,35 @@ import MainBanner from "./components/main banner/mainBanner";
 import PartnersSlider from "./components/sliders/partnersSlider";
 import VacanciesList from "./components/vacancies list/vacanciesList";
 
-export default function Home() {
+export default async function Home() {
+  const companiesRes = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/companies`,
+    {
+      cache: "no-store",
+    },
+  );
+  const companies = await companiesRes.json();
+
+  const vacanciesRes = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/vacancies`,
+    {
+      cache: "no-store",
+    },
+  );
+  const vacancies = await vacanciesRes.json();
+
   return (
     <div className="flex flex-col gap-47.5 max-md:gap-0 overflow-hidden">
       {/* main banner */}
       <MainBanner />
       <div className="px-[17%] max-lg:px-12.5 max-sm:px-4 flex flex-col gap-25 max-md:-mt-25">
         {/* companies grid */}
-        <CompaniesGrid />
+        <CompaniesGrid companies={companies} />
         {/* vacancies list */}
-        <VacanciesList />
+        <VacanciesList vacancies={vacancies} />
       </div>
       {/* partners */}
-      <PartnersSlider /> 
+      <PartnersSlider />
     </div>
   );
 }
