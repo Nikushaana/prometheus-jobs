@@ -1,0 +1,51 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: capsbold;
+  src: url(../public/fonts/HelveticaNeueLTGEO-55Roman.ttf);
+}
+
+@font-face {
+  font-family: notcaps;
+  src: url(../public/fonts/BPG-2017-DejaVuSans\ \(1\).ttf);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: capsbold;
+  text-transform: uppercase;
+  font-feature-settings: "case";
+}
+
+p,
+a,
+::placeholder,
+button,
+legend,
+label {
+  font-family: notcaps;
+}
+
+.showScrollVert::-webkit-scrollbar {
+  width: 5px;
+}
+.showScrollHor::-webkit-scrollbar {
+  height: 5px;
+}
+.notshowScrollVert::-webkit-scrollbar {
+  width: 0px;
+}
+.notShowScrollHor::-webkit-scrollbar {
+  height: 0px;
+}
+::-webkit-scrollbar-track { 
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: #3E7C7F; 
+  border-radius: 10px;
+}
