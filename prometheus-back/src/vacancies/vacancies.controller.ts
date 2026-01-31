@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { VacanciesService } from './vacancies.service';
 import { CreateVacancyDto } from './dto/create-vacancy.dto';
 
@@ -12,8 +12,8 @@ export class VacanciesController {
     }
 
     @Get()
-    findAll() {
-        return this.vacanciesService.findAll();
+    findAll(@Query() query: any) {
+        return this.vacanciesService.findAll(query);
     }
 
     @Get(':id')

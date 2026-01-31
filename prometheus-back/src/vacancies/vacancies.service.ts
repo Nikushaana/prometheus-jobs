@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Vacancy } from './entity/vacancy.entity';
 import { Company } from 'src/companies/entity/company.entity';
-import { Repository } from 'typeorm';
+import { ILike, In, Repository } from 'typeorm';
 import { CreateVacancyDto } from './dto/create-vacancy.dto';
 import { City } from 'src/city/entity/city.entity';
 import { Category } from 'src/category/entity/category.entity';
@@ -54,8 +54,47 @@ export class VacanciesService {
         return this.vacancyRepo.save(vacancy);
     }
 
-    async findAll() {
-        return this.vacancyRepo.find({ order: { createdAt: 'DESC' } });
+    async findAll(query: any) {
+        const {
+            search_text,
+            cities,
+            categories,
+            work_types,
+            salary_types,
+        } = query;
+
+        const where: any = {};
+
+        // Search (basic text search)
+        if (search_text && search_text.trim() !== '') {
+            where.description = ILike(`%${search_text.trim()}%`);
+        }
+
+        // Cities filter
+        if (cities && cities.trim() !== '') {
+            where.city = { id: In(cities.split(',').map((id) => id.trim())) };
+        }
+
+        // Categories filter
+        if (categories && categories.trim() !== '') {
+            where.category = { id: In(categories.split(',').map((id) => id.trim())) };
+        }
+
+        // Work types filter
+        if (work_types && work_types.trim() !== '') {
+            where.workType = { id: In(work_types.split(',').map((id) => id.trim())) };
+        }
+
+        // Salary types filter
+        if (salary_types && salary_types.trim() !== '') {
+            where.salaryType = { id: In(salary_types.split(',').map((id) => id.trim())) };
+        }
+
+        return this.vacancyRepo.find({
+            where,
+            relations: ['city', 'company', 'category', 'workType', 'salaryType'],
+            order: { createdAt: 'DESC' },
+        });
     }
 
     async findOne(id: string) {
