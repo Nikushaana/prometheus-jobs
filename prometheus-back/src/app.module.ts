@@ -5,6 +5,10 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { VacanciesModule } from './vacancies/vacancies.module';
 import { CompaniesModule } from './companies/companies.module';
+import { CityModule } from './city/city.module';
+import { CategoryModule } from './category/category.module';
+import { WorkTypeModule } from './work-type/work-type.module';
+import { SalaryTypeModule } from './salary-type/salary-type.module';
 
 @Module({
   imports: [
@@ -46,6 +50,14 @@ import { CompaniesModule } from './companies/companies.module';
     VacanciesModule,
 
     CompaniesModule,
+
+    CityModule,
+
+    CategoryModule,
+
+    WorkTypeModule,
+
+    SalaryTypeModule
   ],
   controllers: [AppController],
   providers: [AppService],

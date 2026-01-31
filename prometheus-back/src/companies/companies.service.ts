@@ -17,12 +17,6 @@ export class CompaniesService {
     }
 
     async findAll() {
-        return this.companyRepo.find({ relations: ['vacancies'] });
-    }
-
-    async findOne(id: string) {
-        const company = await this.companyRepo.findOne({ where: { id }, relations: ['vacancies'] });
-        if (!company) throw new NotFoundException('Company not found');
-        return company;
+        return this.companyRepo.find();
     }
 }
