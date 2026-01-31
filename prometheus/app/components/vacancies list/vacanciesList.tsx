@@ -1,9 +1,9 @@
 import Link from "next/link";
 import VacancyCard from "../cards/vacancyCard";
 import { Vacancy } from "@/types";
+import Reveal from "@/app/providers/reveal";
 
 export default function VacanciesList({ vacancies }: { vacancies: Vacancy[] }) {
-
   return (
     <div className="flex flex-col gap-y-7.5">
       <div className="flex items-center justify-center">
@@ -12,7 +12,9 @@ export default function VacanciesList({ vacancies }: { vacancies: Vacancy[] }) {
       <div className="flex flex-col">
         <div className="rounded-lg shadow-md max-md:shadow-none flex flex-col max-md:gap-y-5 p-1.25 border border-gray-200">
           {vacancies.map((item: any, index: number) => (
-            <VacancyCard key={item.id} index={index} item={item} />
+            <Reveal key={item.id}>
+              <VacancyCard index={index} item={item} />
+            </Reveal>
           ))}
         </div>
 

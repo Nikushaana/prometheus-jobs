@@ -34,7 +34,7 @@ export default function MainBanner({ cities, categories }: { cities: City, categ
     : "/";
 
   return (
-    <div className="h-[80vh] max-tiny:h-screen flex relative">
+    <div className="h-[70vh] max-tiny:h-screen flex relative">
       <div className="w-full h-full max-lg:pt-0 max-tiny:pt-0 z-1 flex flex-col gap-y-2.5 justify-center px-[17%] max-lg:px-12.5 max-sm:px-4">
         <h1 className="text-[45px] max-tiny:text-[30px] max-md:text-white">
           მოძებნეთ ვაკანსია

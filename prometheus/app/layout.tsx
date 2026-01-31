@@ -21,13 +21,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <div className="">
-          <QueryProvider>
-            <Header />
-            {children}
-            <Footer />
-          </QueryProvider>
-        </div>
+        <QueryProvider>
+          <Header />
+          <div className="mt-22.5">{children}</div>
+          <Footer />
+        </QueryProvider>
       </body>
     </html>
   );
