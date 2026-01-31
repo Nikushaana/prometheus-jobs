@@ -53,7 +53,14 @@ export default async function Page() {
   }
 
   return (
-    <Suspense fallback={<div>იტვირთება...</div>}>
+    <Suspense
+      fallback={[1, 2, 3].map((item: any) => (
+        <div
+          key={item}
+          className="h-27.5 bg-gray-200 rounded-lg w-full animate-pulse"
+        ></div>
+      ))}
+    >
       <VacanciesClient
         cities={cities}
         categories={categories}

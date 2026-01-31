@@ -6,10 +6,11 @@ import { CiLocationOn } from "react-icons/ci";
 import { MdOutlineBusinessCenter } from "react-icons/md";
 import Link from "next/link";
 import { useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import VacancyCard from "../components/cards/vacancyCard";
 import { useQuery } from "@tanstack/react-query";
 import { Category, City, SalaryType, WorkType } from "@/types";
+import { BiLoader } from "react-icons/bi";
 
 type FilterValues = {
   search_text: string;
@@ -17,6 +18,14 @@ type FilterValues = {
   categories: string[];
   work_types: string[];
   salary_types: string[];
+};
+
+const fetchVacancies = async (params: string) => {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/vacancies?${params}`,
+  );
+  if (!res.ok) throw new Error("Failed to fetch vacancies");
+  return res.json();
 };
 
 export default function VacanciesClient({
@@ -30,67 +39,51 @@ export default function VacanciesClient({
   salaryTypes: SalaryType;
   workTypes: WorkType;
 }) {
+  const router = useRouter();
   const searchParams = useSearchParams();
 
-  const search_text = searchParams.get("search_text") || "";
-  const defaultCities = searchParams.get("cities")?.split(",") || [];
-  const defaultCategories = searchParams.get("categories")?.split(",") || [];
-  const defaultWorkTypes = searchParams.get("work_types")?.split(",") || [];
-  const defaultSalaryTypes = searchParams.get("salary_types")?.split(",") || [];
-
   const [filterValues, setFilterValues] = useState<FilterValues>({
-    search_text: search_text ?? "",
-    cities: defaultCities ?? [],
-    categories: defaultCategories ?? [],
-    work_types: defaultWorkTypes ?? [],
-    salary_types: defaultSalaryTypes ?? [],
+    search_text: searchParams.get("search_text") ?? "",
+    cities: searchParams.get("cities")?.split(",") ?? [],
+    categories: searchParams.get("categories")?.split(",") ?? [],
+    work_types: searchParams.get("work_types")?.split(",") ?? [],
+    salary_types: searchParams.get("salary_types")?.split(",") ?? [],
   });
 
-  const params = new URLSearchParams();
-
-  if (filterValues.search_text) {
-    params.append("search_text", filterValues.search_text);
-  }
-
-  if (filterValues.cities.length > 0) {
-    params.append("cities", filterValues.cities.join(","));
-  }
-
-  if (filterValues.categories.length > 0) {
-    params.append("categories", filterValues.categories.join(","));
-  }
-
-  if (filterValues.work_types.length > 0) {
-    params.append("work_types", filterValues.work_types.join(","));
-  }
-
-  if (filterValues.salary_types.length > 0) {
-    params.append("salary_types", filterValues.salary_types.join(","));
-  }
-
-  const searchLink = params.toString()
-    ? `/vacancies?${params.toString()}`
-    : "/vacancies";
+  const [queryParams, setQueryParams] = useState(searchParams.toString() || "");
 
   const { data: vacancies = [], isLoading } = useQuery({
-    queryKey: [
-      "vacancies",
-      {
-        search_text,
-        defaultCities,
-        defaultCategories,
-        defaultWorkTypes,
-        defaultSalaryTypes,
-      },
-    ],
-    queryFn: async () => {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/vacancies?${params.toString()}`,
-      );
-      if (!res.ok) throw new Error("Failed to fetch vacancies");
-      return res.json();
-    },
+    queryKey: ["vacancies", queryParams],
+    queryFn: () => fetchVacancies(queryParams),
+    staleTime: 1000 * 60 * 5,
   });
+
+  const handleFilter = () => {
+    const params = new URLSearchParams();
+
+    if (filterValues.search_text)
+      params.append("search_text", filterValues.search_text);
+    if (filterValues.cities.length)
+      params.append("cities", filterValues.cities.join(","));
+    if (filterValues.categories.length)
+      params.append("categories", filterValues.categories.join(","));
+    if (filterValues.work_types.length)
+      params.append("work_types", filterValues.work_types.join(","));
+    if (filterValues.salary_types.length)
+      params.append("salary_types", filterValues.salary_types.join(","));
+
+    const paramsStr = params.toString();
+
+    if (paramsStr !== queryParams) {
+      // Update the URL
+      router.push(paramsStr ? `/vacancies?${paramsStr}` : "/vacancies", {
+        scroll: false,
+      });
+
+      // Trigger React Query to refetch
+      setQueryParams(paramsStr);
+    }
+  };
 
   return (
     <div>
@@ -136,12 +129,14 @@ export default function VacanciesClient({
                 setValue={setFilterValues}
               />
             </div>
-            <Link
-              href={searchLink}
+            <button
+              onClick={() => {
+                handleFilter();
+              }}
               className="text-white bg-[#3E7C7F] select-none w-30 max-sm:w-full h-12.5 flex items-center justify-center rounded-lg cursor-pointer"
             >
-              ფილტრი
-            </Link>
+              {isLoading ? <BiLoader className="animate-spin" /> : "ფილტრი"}
+            </button>
           </div>
         </div>
 
@@ -179,19 +174,12 @@ export default function VacanciesClient({
                   className="h-27.5 bg-gray-200 rounded-lg w-full animate-pulse"
                 ></div>
               ))
+            ) : vacancies.length > 0 ? (
+              vacancies.map((item: any, index: number) => (
+                <VacancyCard key={item.id} index={index} item={item} />
+              ))
             ) : (
-              <>
-                {vacancies.map((item: any, index: number) => (
-                  <VacancyCard key={item.id} index={index} item={item} />
-                ))}
-                <div
-                  onClick={() => {}}
-                  className="flex flex-col items-center cursor-pointer group"
-                >
-                  <p className="text-[#3E7C7F] h-7.5">მეტის ნახვა</p>
-                  <hr className="w-10 group-hover:w-20 duration-150 border-b-2 border-[#3E7C7F] rounded-full" />
-                </div>
-              </>
+              <p>ინფორმაცია ვერ მოიძებნა</p>
             )}
           </div>
         </div>

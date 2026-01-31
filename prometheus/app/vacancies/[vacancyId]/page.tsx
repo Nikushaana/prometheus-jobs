@@ -43,7 +43,7 @@ export default async function page({ params }: PageProps) {
             </div>
             <div className="flex flex-col gap-y-1.25">
               <h1 className="text-[24px] max-sm:text-center">
-                {vacancy?.position}
+                {vacancy?.category.name}
               </h1>
               <div className="flex flex-wrap justify-start items-center gap-2.5 text-[#696969]">
                 <div className="flex items-center gap-1.25">
@@ -52,12 +52,12 @@ export default async function page({ params }: PageProps) {
                 </div>
                 <div className="flex items-center gap-1.25">
                   <IoLocationOutline className="text-[18px]" />
-                  <p className="text-[13px]">{vacancy?.city + ", " + vacancy?.address}</p>
+                  <p className="text-[13px]">{vacancy?.city.name + ", " + vacancy?.address}</p>
                 </div>
               </div>
               <div className="flex items-center gap-2.5 mt-2.5">
                 <p className="px-3.75 py-1.25 rounded-full bg-[#3e7c7f23] text-[#3E7C7F] text-[13px] cursor-pointer">
-                  {vacancy?.workType}
+                  {vacancy?.workType.name}
                 </p>
                 {vacancy?.premium == 1 && (
                   <p className="px-3.75 py-1.25 rounded-full bg-[#34a85323] text-[#34A853] text-[13px] cursor-pointer">
@@ -106,7 +106,7 @@ export default async function page({ params }: PageProps) {
                 <div className="flex flex-col">
                   <p className="font-semibold">ადგილმდებარეობა:</p>
                   <p className="text-[#696969] text-[14px]">
-                    {vacancy?.city + ", " + vacancy?.address}
+                    {vacancy?.city.name + ", " + vacancy?.address}
                   </p>
                 </div>
               </div>
@@ -190,10 +190,10 @@ export default async function page({ params }: PageProps) {
                 <MdOutlineBusinessCenter className="text-[30px]" />
               </div>
               <p className="text-[14px] text-[#34A853]">{item.company.name}</p>
-              <p className="font-semibold text-center">{item.position}</p>
+              <p className="font-semibold text-center">{item.category.name}</p>
               <div className="flex items-center gap-1.25 text-[#696969]">
                 <CiLocationOn />
-                <p className="text-[14px]">{item.city}</p>
+                <p className="text-[14px]">{item.city.name}</p>
               </div>
             </Link>
           ))}
