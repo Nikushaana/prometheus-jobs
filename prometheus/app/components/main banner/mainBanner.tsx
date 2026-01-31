@@ -6,67 +6,14 @@ import { IoSearchOutline } from "react-icons/io5";
 import MultyDropDown from "../inputs/multyDropDown";
 import { CiLocationOn } from "react-icons/ci";
 import { MdOutlineBusinessCenter } from "react-icons/md";
+import { Category, City } from "@/types";
 
-export default function MainBanner() {
+export default function MainBanner({ cities, categories }: { cities: City, categories: Category }) {
   const [filterValues, setFilterValues] = useState({
     search_text: "",
     cities: [],
     categories: [],
   });
-
-  const cities = [
-    {
-      id: 1,
-      name: "თელავი", 
-    },
-    {
-      id: 2,
-      name: "თბილისი",
-    },
-    {
-      id: 3,
-      name: "რუსთავი",
-    },
-    {
-      id: 4,
-      name: "ყვარელი",
-    },
-    {
-      id: 5,
-      name: "ქუთაისი",
-    },
-  ];
-
-  const categories = [
-    {
-      id: 1,
-      name: "გაყიდვები",
-    },
-    {
-      id: 2,
-      name: "კვება",
-    },
-    {
-      id: 3,
-      name: "IT",
-    },
-    {
-      id: 4,
-      name: "განათლება",
-    },
-    {
-      id: 5,
-      name: "სამართალი",
-    },
-    {
-      id: 6,
-      name: "მშენებლობა",
-    },
-    {
-      id: 7,
-      name: "სილამაზე",
-    },
-  ];
 
   const params = new URLSearchParams();
 

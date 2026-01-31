@@ -155,8 +155,7 @@ export default async function page({ params }: PageProps) {
                 </div>
               </div>
             </div>
-            <Link
-              href={`/employee/${vacancy.company.id}`}
+            <div
               className="bg-[#F5F7FC] p-5 flex items-center gap-5 rounded-lg"
             >
               <div className="w-12.5 h-12.5 flex items-center justify-center rounded-lg overflow-hidden relative bg-[#E8E8E8]">
@@ -166,7 +165,7 @@ export default async function page({ params }: PageProps) {
                 <p>{vacancy?.company.name}</p>
                 <p className="text-[#3E7C7F] text-[14px]">კომპანიის პროფილი</p>
               </div>
-            </Link>
+            </div>
           </div>
         </div>
       </div>

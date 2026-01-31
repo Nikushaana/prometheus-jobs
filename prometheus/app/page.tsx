@@ -6,6 +6,8 @@ import VacanciesList from "./components/vacancies list/vacanciesList";
 export default async function Home() {
   let companies = [];
   let vacancies = [];
+  let cities = [];
+  let categories = [];
 
   try {
     const companiesRes = await fetch(
@@ -28,11 +30,33 @@ export default async function Home() {
   } catch (err) {
     console.error("Vacancies fetch error:", err);
   }
+  
+  try {
+    const citiesRes = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/city`,
+      { cache: "no-store" },
+    );
+    if (!citiesRes.ok) throw new Error("Failed to fetch cities");
+    cities = await citiesRes.json();
+  } catch (err) {
+    console.error("Cities fetch error:", err);
+  }
+  
+  try {
+    const categoriesRes = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/category`,
+      { cache: "no-store" },
+    );
+    if (!categoriesRes.ok) throw new Error("Failed to fetch categories");
+    categories = await categoriesRes.json();
+  } catch (err) {
+    console.error("Categories fetch error:", err);
+  }
 
   return (
     <div className="flex flex-col gap-47.5 max-md:gap-0 overflow-hidden">
       {/* main banner */}
-      <MainBanner />
+      <MainBanner cities={cities} categories={categories}/>
       <div className="px-[17%] max-lg:px-12.5 max-sm:px-4 flex flex-col gap-25 max-md:-mt-25">
         {/* companies grid */}
         <CompaniesGrid companies={companies} />

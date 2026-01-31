@@ -9,6 +9,7 @@ import { useState } from "react";
 import { useSearchParams } from "next/navigation";
 import VacancyCard from "../components/cards/vacancyCard";
 import { useQuery } from "@tanstack/react-query";
+import { Category, City, SalaryType, WorkType } from "@/types";
 
 type FilterValues = {
   search_text: string;
@@ -18,99 +19,17 @@ type FilterValues = {
   salary_types: string[];
 };
 
-export default function VacanciesClient() {
-  const cities = [
-    {
-      id: 1,
-      name: "თელავი",
-    },
-    {
-      id: 2,
-      name: "თბილისი",
-    },
-    {
-      id: 3,
-      name: "რუსთავი",
-    },
-    {
-      id: 4,
-      name: "ყვარელი",
-    },
-    {
-      id: 5,
-      name: "ქუთაისი",
-    },
-  ];
-
-  const categories = [
-    {
-      id: 1,
-      name: "გაყიდვები",
-    },
-    {
-      id: 2,
-      name: "კვება",
-    },
-    {
-      id: 3,
-      name: "IT",
-    },
-    {
-      id: 4,
-      name: "განათლება",
-    },
-    {
-      id: 5,
-      name: "სამართალი",
-    },
-    {
-      id: 6,
-      name: "მშენებლობა",
-    },
-    {
-      id: 7,
-      name: "სილამაზე",
-    },
-  ];
-
-  const workType = [
-    {
-      id: 1,
-      name: "თავისუფალი",
-    },
-    {
-      id: 2,
-      name: "სრული განაკვეთი",
-    },
-    {
-      id: 3,
-      name: "ჰიბრიდული",
-    },
-    {
-      id: 4,
-      name: "ნახევარი განაკვეთი",
-    },
-    {
-      id: 5,
-      name: "ცვლა",
-    },
-  ];
-
-  const salaryType = [
-    {
-      id: 1,
-      name: "ფიქსირებული",
-    },
-    {
-      id: 2,
-      name: "პროცენტი",
-    },
-    {
-      id: 3,
-      name: "ფიქს. + პროცენტი",
-    },
-  ];
-
+export default function VacanciesClient({
+  cities,
+  categories,
+  salaryTypes,
+  workTypes,
+}: {
+  cities: City;
+  categories: Category;
+  salaryTypes: SalaryType;
+  workTypes: WorkType;
+}) {
   const searchParams = useSearchParams();
 
   const search_text = searchParams.get("search_text") || "";
@@ -230,7 +149,7 @@ export default function VacanciesClient() {
           <div className="rounded-lg py-1.25 px-3.75 flex items-center justify-between bg-[#3e7c7f15] text-[#3E7C7F]">
             <MultyDropDown
               placeholder="სამუშაო განაკვეთი"
-              data={workType}
+              data={workTypes}
               name="work_types"
               values={filterValues.work_types}
               setValue={setFilterValues}
@@ -239,7 +158,7 @@ export default function VacanciesClient() {
           <div className="rounded-lg py-1.25 px-3.75 flex items-center justify-between bg-[#3e7c7f15] text-[#3E7C7F]">
             <MultyDropDown
               placeholder="ანაზღაურების ტიპი"
-              data={salaryType}
+              data={salaryTypes}
               name="salary_types"
               values={filterValues.salary_types}
               setValue={setFilterValues}

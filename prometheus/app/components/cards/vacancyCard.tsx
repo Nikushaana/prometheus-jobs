@@ -12,6 +12,7 @@ export default function VacancyCard({
   index: number;
   item: Vacancy;
 }) {
+  
   return (
     <div
       className={`flex items-center justify-between w-full p-6.25 max-md:p-4 gap-5 border-l-[3px] max-md:shadow-md max-md:border max-md:rounded-lg ${
@@ -28,16 +29,16 @@ export default function VacancyCard({
         >
           <MdOutlineBusinessCenter className="text-[30px] max-md:text-[20px]" />
         </Link>
-        <div className="flex flex-col gap-1.25">
+         <div className="flex flex-col gap-1.25">
           <p className="text-gray-400 text-[14px]">{item.company.name}</p>
           <div className="flex max-md:flex-wrap items-center gap-10 max-md:gap-y-2.5 max-xl:gap-5 text-[#696969]">
             <div className="flex items-center gap-1.25">
               <MdOutlineBusinessCenter className="text-[18px]" />
-              <p className="text-[14px]">{item.position}</p>
+              <p className="text-[14px]">{item.category.name}</p>
             </div>
             <div className="flex items-center gap-1.25">
               <IoLocationOutline className="text-[18px]" />
-              <p className="text-[14px]">{item.city}</p>
+              <p className="text-[14px]">{item.city.name}</p>
             </div>
             <div className="flex items-center gap-1.25">
               <GiMoneyStack className="text-[18px]" />
@@ -45,10 +46,10 @@ export default function VacancyCard({
             </div>
             <div className="flex items-center gap-1.25">
               <BiTime className="text-[18px]" />
-              <p className="text-[14px]">{item.workType}</p>
+              <p className="text-[14px]">{item.workType.name}</p>
             </div>
           </div>
-        </div>
+        </div> 
       </div>
 
       <Link href={`/vacancies/${item.id}`} className="max-lg:hidden">
